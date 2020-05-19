@@ -6,11 +6,12 @@ from instaloader import ConnectionException, Instaloader
 
 # FIREFOXCOOKIEFILE = "/home/alex/.mozilla/firefox/l96w6b90.default/cookies.sqlite"
 FIREFOXCOOKIEFILE = glob(expanduser("~/.mozilla/firefox/*.default/cookies.sqlite"))[0]
+#FIREFOXCOOKIEFILE = glob(expanduser("~/Library/Application Support/Firefox/Profiles/*.default-release/cookies.sqlite"))[0]  # Mac
 
 instaloader = Instaloader(max_connection_attempts=1)
 instaloader.context._session.cookies.update(connect(FIREFOXCOOKIEFILE)
                                             .execute("SELECT name, value FROM moz_cookies "
-                                                     "WHERE baseDomain='instagram.com'"))
+                                                     "WHERE host='.instagram.com'"))
 
 try:
     username = instaloader.test_login()
